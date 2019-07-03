@@ -28,23 +28,9 @@ public class GamesResource {
         this.gamesService = gamesService;
 
     }
-
-//    @PostMapping("/{idProduit}/{montantGame}")
-//    public ResponseEntity<?> donnerOffre(@PathVariable Long idProduit,
-//                                   @PathVariable BigDecimal montantGame,
-//                                   Principal user) {
-//        try {
-//            // Récupérer le client à partir du contexte de sécurité (via le raccourci principal) et lui ajouter l'Game
-//            String username = user.getName();
-//            gamesService.deposerGame(username, idProduit, montantGame);
-//            LOGGER.info("Succes du dépôt de l'offre");
-//            return new ResponseEntity<String>("Success du dépôt", HttpStatus.OK);
-//
-//        } catch (Exception ex) {
-//            LOGGER.error("Exception lors du dépôt de l'Offre: " + ex);
-//            return new ResponseEntity<String>("Erreur lors de l'ajout de l'Offre : " + ex.getMessage(), HttpStatus.CONFLICT);
-//        }
-//    }
+    
+    
+    
 
     @GetMapping("/me")
     public ResponseEntity<?> toutesMesOffres(Principal user) {
@@ -61,21 +47,4 @@ public class GamesResource {
             return new ResponseEntity<String>("Erreur lors de l'ajout de l'Offre : " + ex.getMessage(), HttpStatus.CONFLICT);
         }
     }
-
-//    @GetMapping("/me/{idProduit}")
-//    public ResponseEntity<?> toutesMesGamesPourUnProduit(@PathVariable Long idProduit, Principal user) {
-//        try {
-//            // Récupérer le client à partir du contexte de sécurité (via le raccourci principal) et lui ajouter l'game
-//            String me = user.getName();
-//            Set<Game> games =gamesService.toutesLesGamesParUtilisateurParProduit(me,idProduit);
-//            return (games == null)?
-//                    new ResponseEntity<>(HttpStatus.NOT_FOUND):
-//                    new ResponseEntity<Set<Game>>(games, HttpStatus.OK);
-//
-//        } catch (Exception ex) {
-//            LOGGER.error("Exception lors de la consultation de mes games: " + ex);
-//            return new ResponseEntity<String>("Erreur lors de l'ajout de l'game : " + ex.getMessage(), HttpStatus.CONFLICT);
-//        }
-//    }
-
 }
