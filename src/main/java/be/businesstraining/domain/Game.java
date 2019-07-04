@@ -20,43 +20,52 @@ public class Game {
 
     private LocalDateTime dateCreation;
 
-    private short result;
-
+    private int result;
     public Game() {
     }
 
     // Rajouté pour les besoins de l'application de loterie
-    private BigDecimal bet;
-    private BigDecimal gain;
+    private int bet;//mise
+    private int gain;
 
-    public BigDecimal getBet() {
+
+    public int getBet() {
         return bet;
     }
 
-    public void setBet(BigDecimal bet) {
-        this.bet = bet;
+    public LocalDateTime getDateCreation() {
+        return dateCreation;
     }
 
-    public BigDecimal getGain() {
+    public void setDateCreation(LocalDateTime dateCreation) {
+        this.dateCreation = dateCreation;
+    }
+
+    public int getGain() {
         return gain;
     }
 
-    public void setGain(BigDecimal gain) {
+    public void setGain(int gain) {
         this.gain = gain;
     }
 
-    public short getResult() {
+    public void setBet(int bet) {
+        this.bet = bet;
+    }
+    public int getResult() {
         return result;
     }
 
-    public void setResult(short result) {
+    public void setResult(int result) {
         this.result = result;
     }
 
-    public Game(User user, short result, LocalDateTime dateCreation) {
+    public Game(User user, int result, LocalDateTime dateCreation,int bet,int gain) {
         this.user = user;
-        this.result = result;
         this.dateCreation = dateCreation;
+        this.bet=bet;
+        this.gain=gain;
+        this.result=result;
     }
 
     public Long getId() {

@@ -1,6 +1,8 @@
 package be.businesstraining.rest;
 
 import be.businesstraining.domain.Game;
+import be.businesstraining.domain.GameResponse;
+import be.businesstraining.domain.User;
 import be.businesstraining.repository.UsersRepository;
 import be.businesstraining.service.GamesService;
 import org.slf4j.Logger;
@@ -14,7 +16,7 @@ import java.security.Principal;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/games")
+//@RequestMapping("/games")
 public class GamesResource {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GamesResource.class);
@@ -28,18 +30,32 @@ public class GamesResource {
         this.gamesService = gamesService;
 
     }
-    
-    
-    
+
+//    @PostMapping("/{idProduit}/{montantGame}")
+//    public ResponseEntity<?> donnerOffre(@PathVariable Long idProduit,
+//                                   @PathVariable BigDecimal montantGame,
+//                                   Principal user) {
+//        try {
+//            // Récupérer le client à partir du contexte de sécurité (via le raccourci principal) et lui ajouter l'Game
+//            String username = user.getName();
+//            gamesService.deposerGame(username, idProduit, montantGame);
+//            LOGGER.info("Succes du dépôt de l'offre");
+//            return new ResponseEntity<String>("Success du dépôt", HttpStatus.OK);
+//
+//        } catch (Exception ex) {
+//            LOGGER.error("Exception lors du dépôt de l'Offre: " + ex);
+//            return new ResponseEntity<String>("Erreur lors de l'ajout de l'Offre : " + ex.getMessage(), HttpStatus.CONFLICT);
+//        }
+//    }
 
     @GetMapping("/me")
     public ResponseEntity<?> toutesMesOffres(Principal user) {
         try {
             // Récupérer le client à partir du contexte de sécurité (via le raccourci principal) et lui ajouter l'offre
             String me = user.getName();
-            Set<Game> games =gamesService.tousLesJeuxParUtilisateur(me);
-            return (games == null)?
-                    new ResponseEntity<>(HttpStatus.NOT_FOUND):
+            Set<Game> games = gamesService.tousLesJeuxParUtilisateur(me);
+            return (games == null) ?
+                    new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                     new ResponseEntity<Set<Game>>(games, HttpStatus.OK);
 
         } catch (Exception ex) {
@@ -47,4 +63,34 @@ public class GamesResource {
             return new ResponseEntity<String>("Erreur lors de l'ajout de l'Offre : " + ex.getMessage(), HttpStatus.CONFLICT);
         }
     }
+
+    @GetMapping("/game")
+    public ResponseEntity<?> sendNumbers(Principal user) {
+        String numberToSend = gamesService.generate(1, 7);
+        if (user != null) {
+            User player=usersRepository.findByUsername(user.getName());
+            return new ResponseEntity<String>(numberToSend,HttpStatus.OK);
+        } else {
+            return new ResponseEntity<String>("problem generated numbers", HttpStatus.NOT_FOUND);
+
+        }
+
+}
+
+//    @GetMapping("/me/{idProduit}")
+//    public ResponseEntity<?> toutesMesGamesPourUnProduit(@PathVariable Long idProduit, Principal user) {
+//        try {
+//            // Récupérer le client à partir du contexte de sécurité (via le raccourci principal) et lui ajouter l'game
+//            String me = user.getName();
+//            Set<Game> games =gamesService.toutesLesGamesParUtilisateurParProduit(me,idProduit);
+//            return (games == null)?
+//                    new ResponseEntity<>(HttpStatus.NOT_FOUND):
+//                    new ResponseEntity<Set<Game>>(games, HttpStatus.OK);
+//
+//        } catch (Exception ex) {
+//            LOGGER.error("Exception lors de la consultation de mes games: " + ex);
+//            return new ResponseEntity<String>("Erreur lors de l'ajout de l'game : " + ex.getMessage(), HttpStatus.CONFLICT);
+//        }
+//    }
+
 }

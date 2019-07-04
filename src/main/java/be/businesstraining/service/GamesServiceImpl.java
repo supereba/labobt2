@@ -2,15 +2,13 @@ package be.businesstraining.service;
 
 import be.businesstraining.domain.Game;
 import be.businesstraining.domain.User;
-import be.businesstraining.repository.UsersRepository;
 import be.businesstraining.repository.GamesRepository;
+import be.businesstraining.repository.UsersRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,12 +16,12 @@ import java.util.Set;
 public class GamesServiceImpl implements GamesService {
     private static final Logger LOGGER = LoggerFactory.getLogger(GamesServiceImpl.class);
 
-    private UsersRepository clientsRepository;
+    private UsersRepository userRepository;
     private GamesRepository offresRepository;
 
     public GamesServiceImpl(UsersRepository clientsRepository,
-                            GamesRepository offresRepository ) {
-        this.clientsRepository = clientsRepository;
+                            GamesRepository offresRepository) {
+        this.userRepository = clientsRepository;
         this.offresRepository = offresRepository;
     }
 
@@ -72,14 +70,31 @@ public class GamesServiceImpl implements GamesService {
 
     @Override
     public Set<Game> tousLesJeuxParUtilisateur(String username) {
-        Set<Game> a_retourner = new HashSet<>();
-        try {
-            a_retourner = offresRepository.findAllByUser_Username(username);
-            LOGGER.info("********* Le nombre d offres de : " + username + " est : "+ a_retourner.size() );
-        }catch (Exception ex){
-            LOGGER.error("******** Exception lors de la consultation de mes offres: " + ex.getMessage());
+
+//        Set<Game> a_retourner = new HashSet<>();
+//        try {
+//            a_retourner = offresRepository.findAllByUser_Username(username);
+//            LOGGER.info("********* Le nombre d offres de : " + username + " est : " + a_retourner.size());
+//        } catch (Exception ex) {
+//            LOGGER.error("******** Exception lors de la consultation de mes offres: " + ex.getMessage());
+//        }
+//        return a_retourner;
+    }
+
+    @Override
+    public String generate(int min, int max) {
+        String val = "";
+        for (int i = 0; i < 3; i++) {
+            int n = (int) (Math.random() * ((max - min) + 1)) + min;
+            String res = String.valueOf(n);
+            val = val.concat(res);
         }
-        return  a_retourner;
+        return val;
+    }
+    @Override
+    public void saveData(String username,int numberGenerated, int bet,int gain){
+        User user=userRepository.findByUsername(username);
+        Game game= new Game(user,numberGenerated, LocalDate.now(),bet,gain);
     }
 
 }

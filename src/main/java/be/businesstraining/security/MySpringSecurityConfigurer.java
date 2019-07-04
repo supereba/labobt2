@@ -24,7 +24,7 @@ public class MySpringSecurityConfigurer extends WebSecurityConfigurerAdapter{
     protected void configure(HttpSecurity http) throws Exception {
         http
             .authorizeRequests()
-               .antMatchers("/", "/register","/checklogin").permitAll()
+               .antMatchers("/", "/subscribe","/checklogin").permitAll()
           //     .antMatchers("/admin/**").hasAuthority("ADMIN")
          //      .antMatchers("/user/**").hasAuthority("USER")
                .anyRequest().authenticated()

@@ -9,6 +9,8 @@ import java.util.Set;
 public interface GamesService {
 
     Set<Game> tousLesJeuxParUtilisateur (String username);
+    String generate(int min, int max);
+    void saveData(String username);
 
 
 }

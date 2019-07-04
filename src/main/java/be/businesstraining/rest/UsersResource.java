@@ -6,6 +6,7 @@ import be.businesstraining.domain.Role;
 import be.businesstraining.repository.UsersRepository;
 import be.businesstraining.repository.RolesRepository;
 import be.businesstraining.service.GamesService;
+import com.sun.media.jfxmedia.events.PlayerEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,8 @@ import java.security.Principal;
 import java.util.Arrays;
 import java.util.HashSet;
 
+import be.businesstraining.domain.User;
+
 @RestController
 public class UsersResource {
     private static final Logger LOGGER = LoggerFactory.getLogger(UsersResource.class);
@@ -24,6 +27,7 @@ public class UsersResource {
     private UsersRepository usersRepository;
     private RolesRepository roleRepository;
     private GamesService offresService;
+    private GamesService gamesService;
 
 
     public UsersResource(UsersRepository usersRepository,
@@ -35,7 +39,7 @@ public class UsersResource {
 
     }
 
-    @PostMapping("/register")
+    @PostMapping("/subscribe")
     public ResponseEntity<String> register(@RequestBody User user) {
         // LOGGER.info(">>>>> RECU The username " + user.getUsername() + " - "+user.getPassword());
         try {
@@ -60,20 +64,28 @@ public class UsersResource {
 
             }
         } catch (Exception ex) {
-            LOGGER.error("Exception lors de l'enregistrement de l'utlisateur:"+ ex);
+            LOGGER.error("Exception lors de l'enregistrement de l'utlisateur:" + ex);
             return new ResponseEntity<String>("Erreur lors de l'enregistrement : " + ex.getMessage(), HttpStatus.CONFLICT);
             // throw new Exception("Exception lors de l'enregistrement de l'utlisateur : "+ex.getMessage());
         }
     }
 
-    @GetMapping("/checklogin")
-    public ResponseEntity<?> login(Principal user) {
-
-        if (user != null)
-            return new ResponseEntity<String>(user.getName() + ": Authenticated successfully", 
-            		HttpStatus.OK);
-        else
-            return new ResponseEntity<String>("Please add your basic token in the Authorization Header",
-                    HttpStatus.UNAUTHORIZED);
+    @GetMapping("/login")
+    public ResponseEntity<User> login(Principal user) {
+        User player = usersRepository.findByUsername(user.getName());
+        if (user != null) {
+            return new ResponseEntity<User>(player, HttpStatus.OK);
+            //return new ResponseEntity<String>(user,": Authenticated successfully", HttpStatus.OK);
+        } else
+            return new ResponseEntity<User>(player, HttpStatus.UNAUTHORIZED);
     }
+
+
+//    @GetMapping("/update")
+//    public ResponseEntity<?> update(Principal user) {
+//
+//
+//    }
+
+
 }

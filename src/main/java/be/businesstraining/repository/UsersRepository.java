@@ -12,6 +12,7 @@ public interface UsersRepository extends JpaRepository<User,Long> {
     User findByUsername(String username);
     Set<Game> findAllByUsername(String username);
 
+
     @Query(value = "From User c where c.amount = (select max(c.amount) from User c)")
     Set<User> clientAyantLeMeilleurSolde() ;
 
